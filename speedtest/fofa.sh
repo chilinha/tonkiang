@@ -35,7 +35,14 @@ case $city_choice in
         url_fofa=$(echo  '"udpxy" && country="CN" && region="Beijing" && org="China Unicom Beijing Province Network" && protocol="http"' | base64 |tr -d '\n')
         url_fofa="https://fofa.info/result?qbase64="$url_fofa
         ;;
-        
+    0)
+        # 如果选择是“全部选项”，则逐个处理每个选项
+        for option in {1..15}; do
+          bash  "$0" $option  # 假定fofa.sh是当前脚本的文件名，$option将递归调用
+        done
+        exit 0
+        ;;
+
     *)
         echo "错误：无效的选择。"
         exit 1
