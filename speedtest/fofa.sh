@@ -13,11 +13,11 @@ i=0
 
 if [ $# -eq 0 ]; then
   echo "请选择城市："
-  echo "2. 北京联通（Beijing_liantong_145）"
-  echo "3. 四川电信（Sichuan_333）"
-  echo "8. 河南电信（Henan_327）"
-  echo "10. 天津联通（Tianjin_160）"
-  echo "15. 河北联通（Hebei_313）"
+  echo "1. 天津联通"
+  echo "2. 北京联通"
+  echo "3. 河北联通"
+  echo "4. 河南联通"
+  echo "5. 四川电信"
   echo "0. 全部"
   read -t 10 -p "输入选择或在10秒内无输入将默认选择全部: " city_choice
 
@@ -32,40 +32,40 @@ fi
 
 # 根据用户选择设置城市和相应的stream
 case $city_choice in
+    1)
+        city="Tianjin"
+        stream="udp/225.1.1.120:5002"
+        channel_key="天津联通"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Tianjin" && org="CHINA UNICOM China169 Backbone" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
     2)
-        city="Beijing_liantong_145"
-        stream="rtp/239.3.1.236:2000"
+        city="Beijing"
+        stream="rtp/239.3.1.129:8008"
         channel_key="北京联通"
         url_fofa=$(echo  '"udpxy" && country="CN" && region="Beijing" && org="China Unicom Beijing Province Network" && protocol="http"' | base64 |tr -d '\n')
         url_fofa="https://fofa.info/result?qbase64="$url_fofa
         ;;
     3)
-        city="Sichuan_333"
-        stream="udp/239.93.42.33:5140"
+        city="Hebei"
+        stream="rtp/239.253.92.83:8012"
+        channel_key="河北联通"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Hebei" && org="CHINA UNICOM China169 Backbone" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    4)
+        city="Henan"
+        stream="rtp/225.1.4.73:1102"
+        channel_key="河南联通"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Henan" && org="CHINA UNICOM China169 Backbone" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    5)
+        city="Sichuan"
+        stream="udp/239.93.42.24:5140"
         channel_key="四川电信"
         url_fofa=$(echo  '"udpxy" && country="CN" && region="Sichuan" && org="CHINA UNICOM China169 Backbone"  && protocol="http"' | base64 |tr -d '\n')
         url_fofa=$(echo  '"udpxy" && country="CN" && region="Sichuan" && protocol="http"' | base64 |tr -d '\n')
-        url_fofa="https://fofa.info/result?qbase64="$url_fofa
-        ;;
-    8)
-        city="Henan_327"
-        stream="rtp/239.16.20.1:10010"
-        channel_key="河南电信"
-        url_fofa=$(echo  '"udpxy" && country="CN" && region="Henan" && city="Zhengzhou"  && protocol="http"' | base64 |tr -d '\n')
-        url_fofa="https://fofa.info/result?qbase64="$url_fofa
-        ;;
-    10)
-        city="Tianjin_160"
-        stream="udp/225.1.2.190:5002"
-        channel_key="天津联通"
-        url_fofa=$(echo  '"udpxy" && country="CN" && region="Tianjin" && protocol="http"' | base64 |tr -d '\n')
-        url_fofa="https://fofa.info/result?qbase64="$url_fofa
-        ;;
-    15)
-        city="Hebei_313"
-        stream="rtp/239.253.93.134:6631"
-        channel_key="河北联通"
-        url_fofa=$(echo ""udpxy" && country="CN" && region="Hebei"  && protocol="http"" | base64)
         url_fofa="https://fofa.info/result?qbase64="$url_fofa
         ;;
     0)
@@ -135,11 +135,11 @@ while IFS= read -r line; do
 done < "$only_good_ip"
 
 rm -f zubo.tmp
-awk '/M|k/{print $2"  "$1}' "speedtest_${city}_$time.log" | sort -n -r >"result/result_fofa_${city}.txt"
-cat "result/result_fofa_${city}.txt"
-ip1=$(awk 'NR==1{print $2}' result/result_fofa_${city}.txt)
-ip2=$(awk 'NR==2{print $2}' result/result_fofa_${city}.txt)
-ip3=$(awk 'NR==3{print $2}' result/result_fofa_${city}.txt)
+awk '/M|k/{print $2"  "$1}' "speedtest_${city}_$time.log" | sort -n -r >"result/result_${city}.txt"
+cat "result/result_${city}.txt"
+ip1=$(awk 'NR==1{print $2}' result/result_${city}.txt)
+ip2=$(awk 'NR==2{print $2}' result/result_${city}.txt)
+ip3=$(awk 'NR==3{print $2}' result/result_${city}.txt)
 rm -f "speedtest_${city}_$time.log"
 
 # 用 3 个最快 ip 生成对应城市的 txt 文件
@@ -148,43 +148,9 @@ program="template/template_${city}.txt"
 sed "s/ipipip/$ip1/g" "$program" > tmp1.txt
 sed "s/ipipip/$ip2/g" "$program" > tmp2.txt
 sed "s/ipipip/$ip3/g" "$program" > tmp3.txt
-cat tmp1.txt tmp2.txt tmp3.txt > "txt/fofa_${city}.txt"
+cat tmp1.txt tmp2.txt tmp3.txt > "txt/${city}.txt"
 
 rm -rf tmp1.txt tmp2.txt tmp3.txt
-
-
-#--------------------合并所有城市的txt文件为:   zubo_fofa.txt-----------------------------------------
-
-echo "上海电信,#genre#" >zubo_fofa.txt
-cat txt/Shanghai_103.txt >>zubo_fofa.txt
-echo "江苏,#genre#" >>zubo_fofa.txt
-cat txt/Jiangsu.txt >>zubo_fofa.txt
-#echo "北京电信,#genre#" >>zubo_fofa.txt
-#cat txt/Beijing_dianxin_186.txt >>zubo_fofa.txt
-echo "北京联通,#genre#" >>zubo_fofa.txt
-cat txt/Beijing_liantong_145.txt >>zubo_fofa.txt
-echo "天津联通,#genre#" >>zubo_fofa.txt
-cat txt/Tianjin_160.txt >>zubo_fofa.txt
-echo "河南电信,#genre#" >>zubo_fofa.txt
-cat txt/Henan_327.txt >>zubo_fofa.txt
-echo "山西电信,#genre#" >>zubo_fofa.txt
-cat txt/Shanxi_117.txt >>zubo_fofa.txt
-echo "广东电信,#genre#" >>zubo_fofa.txt
-cat txt/Guangdong_332.txt >>zubo_fofa.txt
-echo "四川电信,#genre#" >>zubo_fofa.txt
-cat txt/Sichuan_333.txt >>zubo_fofa.txt
-echo "浙江电信,#genre#" >>zubo_fofa.txt
-cat txt/Zhejiang_120.txt >>zubo_fofa.txt
-echo "湖北电信,#genre#" >>zubo_fofa.txt
-cat txt/Hubei_90.txt >>zubo_fofa.txt
-echo "福建电信,#genre#" >>zubo_fofa.txt
-cat txt/Fujian_114.txt >>zubo_fofa.txt
-echo "湖南电信,#genre#" >>zubo_fofa.txt
-cat txt/Hunan_282.txt >>zubo_fofa.txt
-echo "甘肃电信,#genre#" >>zubo_fofa.txt
-cat txt/Gansu_105.txt >>zubo_fofa.txt
-echo "河北联通,#genre#" >>zubo_fofa.txt
-cat txt/Hebei_313.txt >>zubo_fofa.txt
 
 
 for a in result/*.txt; do echo "";echo "========================= $(basename "$a") ==================================="; cat $a; done
