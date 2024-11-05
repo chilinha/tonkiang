@@ -14,6 +14,10 @@ i=0
 if [ $# -eq 0 ]; then
   echo "请选择城市："
   echo "2. 北京联通（Beijing_liantong_145）"
+  echo "3. 四川电信（Sichuan_333）"
+  echo "8. 河南电信（Henan_327）"
+  echo "10. 天津联通（Tianjin_160）"
+  echo "15. 河北联通（Hebei_313）"
   echo "0. 全部"
   read -t 10 -p "输入选择或在10秒内无输入将默认选择全部: " city_choice
 
@@ -33,6 +37,35 @@ case $city_choice in
         stream="rtp/239.3.1.236:2000"
         channel_key="北京联通"
         url_fofa=$(echo  '"udpxy" && country="CN" && region="Beijing" && org="China Unicom Beijing Province Network" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    3)
+        city="Sichuan_333"
+        stream="udp/239.93.42.33:5140"
+        channel_key="四川电信"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Sichuan" && org="CHINA UNICOM China169 Backbone"  && protocol="http"' | base64 |tr -d '\n')
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Sichuan" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    8)
+        city="Henan_327"
+        stream="rtp/239.16.20.1:10010"
+        channel_key="河南电信"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Henan" && city="Zhengzhou"  && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    10)
+        city="Tianjin_160"
+        stream="udp/225.1.2.190:5002"
+        channel_key="天津联通"
+        url_fofa=$(echo  '"udpxy" && country="CN" && region="Tianjin" && protocol="http"' | base64 |tr -d '\n')
+        url_fofa="https://fofa.info/result?qbase64="$url_fofa
+        ;;
+    15)
+        city="Hebei_313"
+        stream="rtp/239.253.93.134:6631"
+        channel_key="河北联通"
+        url_fofa=$(echo ""udpxy" && country="CN" && region="Hebei"  && protocol="http"" | base64)
         url_fofa="https://fofa.info/result?qbase64="$url_fofa
         ;;
     0)
