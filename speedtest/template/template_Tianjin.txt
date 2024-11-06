@@ -28,7 +28,7 @@ CCTV17,http://ipipip/udp/225.1.2.52:5002
 风云音乐,http://ipipip/udp/225.1.2.176:5002
 央视文化精品,http://ipipip/udp/225.1.2.177:5002
 电视指南,http://ipipip/udp/225.1.2.167:5002
-CETV5,http://ipipip/udp/225.1.2.207:5002
+早期教育,http://ipipip/udp/225.1.2.207:5002
 安徽卫视,http://ipipip/udp/225.1.1.127:5002
 北京卫视,http://ipipip/udp/225.1.1.113:5002
 重庆卫视,http://ipipip/udp/225.1.1.155:5002
