@@ -53,6 +53,7 @@ CETV5,http://ipipip/udp/225.1.2.207:5002
 天津卫视,http://ipipip/udp/225.1.1.111:5002
 云南卫视,http://ipipip/udp/225.1.1.250:5002
 浙江卫视,http://ipipip/udp/225.1.1.112:5002
+青海卫视,http://ipipip/rtp/225.1.1.41:5002
 陕西卫视,http://ipipip/udp/225.1.1.41:5002
 山西卫视,http://ipipip/udp/225.1.1.50:5002
 内蒙古卫视,http://ipipip/udp/225.1.1.32:5002
