@@ -31,7 +31,7 @@ CCTV4美洲,http://ipipip/rtp/239.253.93.193:6371
 电视指南,http://ipipip/rtp/239.253.93.249:6427
 CETV1,http://ipipip/rtp/239.253.92.211:6069
 CETV4,http://ipipip/rtp/239.253.92.200:6137
-CETV5,http://ipipip/rtp/239.253.93.164:6440
+早期教育,http://ipipip/rtp/239.253.93.164:6440
 安徽卫视,http://ipipip/rtp/239.253.92.209:6566
 北京卫视,http://ipipip/rtp/239.253.92.87:8014
 重庆卫视,http://ipipip/rtp/239.253.92.10:6053
