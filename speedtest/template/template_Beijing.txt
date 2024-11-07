@@ -1,0 +1,6 @@
+CCTV4欧洲,http://ipipip/rtp/239.3.1.213:4220
+CCTV4美洲,http://ipipip/rtp/239.3.1.214:4220
+CETV1,http://ipipip/rtp/239.3.1.57:8152
+东南卫视,http://ipipip/rtp/239.3.1.156:8148
+山东卫视,http://ipipip/rtp/239.3.1.209:8052
+卡酷少儿,http://ipipip/rtp/239.3.1.189:8000
