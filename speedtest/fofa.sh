@@ -15,9 +15,7 @@ if [ $# -eq 0 ]; then
   echo "请选择城市："
   echo "1. 天津联通"
   echo "2. 北京联通"
-  echo "3. 河北联通"
-  echo "4. 河南联通"
-  echo "5. 四川电信"
+  echo "3. 四川电信"
   echo "0. 全部"
   read -t 10 -p "输入选择或在10秒内无输入将默认选择全部: " city_choice
 
@@ -47,20 +45,6 @@ case $city_choice in
         url_fofa="https://fofa.info/result?qbase64="$url_fofa
         ;;
     3)
-        city="Hebei"
-        stream="rtp/239.253.92.83:8012"
-        channel_key="河北联通"
-        url_fofa=$(echo  '"udpxy" && country="CN" && region="Hebei" && org="CHINA UNICOM China169 Backbone" && protocol="http"' | base64 |tr -d '\n')
-        url_fofa="https://fofa.info/result?qbase64="$url_fofa
-        ;;
-    4)
-        city="Henan"
-        stream="rtp/225.1.4.73:1102"
-        channel_key="河南联通"
-        url_fofa=$(echo  '"udpxy" && country="CN" && region="Henan" && org="CHINA UNICOM China169 Backbone" && protocol="http"' | base64 |tr -d '\n')
-        url_fofa="https://fofa.info/result?qbase64="$url_fofa
-        ;;
-    5)
         city="Sichuan"
         stream="udp/239.93.42.24:5140"
         channel_key="四川电信"
@@ -69,7 +53,7 @@ case $city_choice in
         ;;
     0)
         # 如果选择是“全部选项”，则逐个处理每个选项
-        for option in {1..15}; do
+        for option in {1..3}; do
           bash  "$0" $option  # 假定fofa.sh是当前脚本的文件名，$option将递归调用
         done
         exit 0
@@ -139,17 +123,19 @@ cat "result/result_${city}.txt"
 ip1=$(awk 'NR==1{print $2}' result/result_${city}.txt)
 ip2=$(awk 'NR==2{print $2}' result/result_${city}.txt)
 ip3=$(awk 'NR==3{print $2}' result/result_${city}.txt)
+ip4=$(awk 'NR==4{print $2}' result/result_${city}.txt)
 rm -f "speedtest_${city}_$time.log"
 
-# 用 3 个最快 ip 生成对应城市的 txt 文件
+# 用 4 个最快 ip 生成对应城市的 txt 文件
 program="template/template_${city}.txt"
 
 sed "s/ipipip/$ip1/g" "$program" > tmp1.txt
 sed "s/ipipip/$ip2/g" "$program" > tmp2.txt
 sed "s/ipipip/$ip3/g" "$program" > tmp3.txt
-cat tmp1.txt tmp2.txt tmp3.txt > "txt/${city}.txt"
+sed "s/ipipip/$ip4/g" "$program" > tmp4.txt
+cat tmp1.txt tmp2.txt tmp3.txt tmp4.txt > "txt/${city}.txt"
 
-rm -rf tmp1.txt tmp2.txt tmp3.txt
+rm -rf tmp1.txt tmp2.txt tmp3.txt tmp4.txt
 
 
 for a in result/*.txt; do echo "";echo "========================= $(basename "$a") ==================================="; cat $a; done
