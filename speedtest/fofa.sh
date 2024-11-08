@@ -140,4 +140,12 @@ cat tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt > "txt/${city}.txt"
 rm -rf tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt
 
 
-for a in result/*.txt; do echo "";echo "========================= $(basename "$a") ==================================="; cat $a; done
+#--------------------合并所有城市的txt文件为:   fofa.txt-----------------------------------------
+
+
+echo "天津联通,#genre#" >fofa.txt
+cat txt/Tianjin.txt >>fofa.txt
+echo "北京联通,#genre#" >>fofa.txt
+cat txt/Beijing.txt >>fofa.txt
+echo "四川电信,#genre#" >>fofa.txt
+cat txt/Sichuan.txt >>fofa.txt
