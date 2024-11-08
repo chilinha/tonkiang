@@ -111,7 +111,7 @@ while IFS= read -r line; do
     url="http://$ip/$stream"
     echo "$url"
     curl "$url" --connect-timeout 3 --max-time 10 -o /dev/null >zubo.tmp 2>&1
-    a=$(head -n 3 zubo.tmp | awk '{print $NF}' | tail -n 1)
+    a=$(head -n 5 zubo.tmp | awk '{print $NF}' | tail -n 1)
 
     echo "第 $i/$lines 个：$ip $a"
     echo "$ip $a" >> "speedtest_${city}_$time.log"
@@ -123,6 +123,8 @@ cat "result/result_${city}.txt"
 ip1=$(awk 'NR==1{print $2}' result/result_${city}.txt)
 ip2=$(awk 'NR==2{print $2}' result/result_${city}.txt)
 ip3=$(awk 'NR==3{print $2}' result/result_${city}.txt)
+ip4=$(awk 'NR==4{print $2}' result/result_${city}.txt)
+ip5=$(awk 'NR==5{print $2}' result/result_${city}.txt)
 rm -f "speedtest_${city}_$time.log"
 
 # 用 3 个最快 ip 生成对应城市的 txt 文件
@@ -131,9 +133,11 @@ program="template/template_${city}.txt"
 sed "s/ipipip/$ip1/g" "$program" > tmp1.txt
 sed "s/ipipip/$ip2/g" "$program" > tmp2.txt
 sed "s/ipipip/$ip3/g" "$program" > tmp3.txt
-cat tmp1.txt tmp2.txt tmp3.txt > "txt/${city}.txt"
+sed "s/ipipip/$ip4/g" "$program" > tmp4.txt
+sed "s/ipipip/$ip5/g" "$program" > tmp5.txt
+cat tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt > "txt/${city}.txt"
 
-rm -rf tmp1.txt tmp2.txt tmp3.txt
+rm -rf tmp1.txt tmp2.txt tmp3.txt tmp4.txt tmp5.txt
 
 
 for a in result/*.txt; do echo "";echo "========================= $(basename "$a") ==================================="; cat $a; done
